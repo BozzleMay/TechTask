@@ -1,7 +1,7 @@
 $('#myTable').DataTable({
   
     ajax: {
-      url:  "http://localhost/Motor%20Easy/libs/php/getData.php",
+      url:  "/libs/php/getData.php",
       dataSrc: 'data',
       cache: true,
       responsive: true,
