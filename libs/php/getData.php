@@ -14,8 +14,8 @@
 
 	header('Content-Type: application/json; charset=UTF-8');
 
-	$conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
-	//$conn = new mysqli($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db)
+	// $conn = new mysqli($cd_host, $cd_user, $cd_password, $cd_dbname, $cd_port, $cd_socket);
+	$conn = new mysqli($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
 
 	if (mysqli_connect_errno()) {
 		
@@ -35,10 +35,11 @@
 
 	// SQL does not accept parameters and so is not prepared
 
-	$query = 'SELECT *, MAX(created) FROM `trialtable`
-    GROUP BY sectionid
-    ORDER BY created DESC
-    LIMIT 10';
+	// $query = 'SELECT *, MAX(created) FROM `trialtable`
+    // GROUP BY sectionid
+    // ORDER BY created DESC
+    // LIMIT 10';
+	$query = 'SELECT a.`sectionid`, a.`title`, r.MaxCreated, `s`.`section name` FROM (SELECT `sectionid`, MAX(created) as MaxCreated FROM articles GROUP BY sectionid) r INNER JOIN articles a ON a.sectionid = r.`sectionid` AND a.created = r.MaxCreated LEFT JOIN sections s ON (a.sectionid = s.id) GROUP BY sectionid ORDER BY r.MaxCreated DESC LIMIT 10';
 
 	$result = $conn->query($query);
 	
